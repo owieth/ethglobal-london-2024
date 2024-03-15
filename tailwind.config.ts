@@ -18,6 +18,10 @@ const config = {
       },
     },
     extend: {
+      screens: {
+        xss: '250px',
+        xs: '400px',
+      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
