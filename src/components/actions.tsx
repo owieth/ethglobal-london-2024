@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/drawer';
 import { useDynamicContext } from '@dynamic-labs/sdk-react-core';
 import { sendTransaction, waitForTransaction } from '@wagmi/core';
-import { MoveDownLeft, MoveUpRight, X } from 'lucide-react';
+import { MoveUpRight, X } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { useState } from 'react';
 import { parseEther } from 'viem';
@@ -112,15 +112,10 @@ const Actions = () => {
 
   return (
     <>
-      <div className="flex justify-between w-full flex-col xs:flex-row gap-4">
+      <div className="flex justify-center w-full">
         <Button size="lg" className="gap-4" onClick={() => setOpen(!open)}>
           <MoveUpRight className="h-4 w-4" />
-          <span className="hidden xss:block">Send</span>
-        </Button>
-
-        <Button size="lg" className="gap-4" onClick={() => setOpen(!open)}>
-          <MoveDownLeft className="h-4 w-4" />
-          <span className="hidden xss:block">Receive</span>
+          <span className="hidden xss:block">Pay</span>
         </Button>
       </div>
 
