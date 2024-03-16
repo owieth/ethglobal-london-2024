@@ -16,13 +16,11 @@ import { MoveUpRight, X } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { useState } from 'react';
 import { parseEther } from 'viem';
-import PhoneNumbers from './phone-numbers';
 import { Button } from './ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from './ui/card';
@@ -35,6 +33,7 @@ import {
   SelectValue,
 } from './ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import SendPhoneForm from "@/components/send-phone-form";
 
 const Actions = () => {
   const [open, setOpen] = useState(false);
@@ -68,11 +67,8 @@ const Actions = () => {
               <CardDescription>Change your password here</CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
-              <PhoneNumbers />
+              <SendPhoneForm/>
             </CardContent>
-            <CardFooter>
-              <Button onClick={onSubmit}>Send</Button>
-            </CardFooter>
           </Card>
         );
 
