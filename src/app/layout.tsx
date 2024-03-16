@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import { Toaster } from 'sonner';
 import './globals.css';
 import { WalletProvider } from './wallet-provider';
 
@@ -17,9 +18,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <WalletProvider>
-        <body className={inter.className}>{children}</body>
-      </WalletProvider>
+      <body className={inter.className}>
+        <WalletProvider>{children}</WalletProvider>
+        <Toaster richColors />
+      </body>
     </html>
   );
 }

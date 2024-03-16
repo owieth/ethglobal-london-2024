@@ -27,7 +27,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { toast } from '@/components/ui/use-toast';
 import { cn } from '@/lib/utils';
 
 const languages = [
@@ -53,16 +52,7 @@ const PhoneNumbers = () => {
     resolver: zodResolver(FormSchema),
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast({
-      title: 'You submitted the following values:',
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
-  }
+  function onSubmit(data: z.infer<typeof FormSchema>) {}
 
   return (
     <Form {...form}>
