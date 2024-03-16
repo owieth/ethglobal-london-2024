@@ -2,12 +2,18 @@
 
 import Actions from '@/components/actions';
 import Transactions from '@/components/transactions';
-import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar';
-import {Button} from '@/components/ui/button';
-import {DynamicUserProfile, useDynamicContext} from '@/lib/dynamic';
-import {LogIn} from 'lucide-react';
-import {useEffect, useState} from 'react';
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { DynamicUserProfile, useDynamicContext } from '@/lib/dynamic';
+import { LogIn } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 async function getData() {
   const transactions = [
@@ -55,24 +61,24 @@ async function getData() {
     },
   ];
 
-  return {transactions};
+  return { transactions };
 }
 
 export default function Home() {
   const [transactions, setTransactions] = useState([]);
 
-  const {primaryWallet, setShowAuthFlow, setShowDynamicUserProfile} =
+  const { primaryWallet, setShowAuthFlow, setShowDynamicUserProfile } =
     useDynamicContext();
 
   const WalletButton = () =>
     primaryWallet?.address ? (
       <Avatar onClick={() => setShowDynamicUserProfile(true)}>
-        <AvatarImage src="https://github.com/shadcn.png"/>
+        <AvatarImage src="https://github.com/shadcn.png" />
         <AvatarFallback>CN</AvatarFallback>
       </Avatar>
     ) : (
       <Button onClick={() => setShowAuthFlow(true)} className="flex gap-4">
-        <LogIn className="h-4 w-4"/>
+        <LogIn className="h-4 w-4" />
         Get started
       </Button>
     );
@@ -96,35 +102,35 @@ export default function Home() {
 
   if (primaryWallet !== null) {
     return (
-      <div className="relative flex min-h-screen flex-col items-center justify-between p-6 md:p-12">
+      <div className="relative flex min-h-screen flex-col items-center justify-between w-full pt-12">
         <div className="flex justify-between items-center w-full mb-8">
           <h1>Hey, welcome back 👋</h1>
-          <WalletButton/>
+          <WalletButton />
         </div>
 
         {/* <BalanaceChart /> */}
-        <Transactions transactions={transactions}/>
+        <Transactions transactions={transactions} />
 
-        <Actions/>
+        <Actions />
 
-        <DynamicUserProfile/>
+        <DynamicUserProfile />
       </div>
-    )
+    );
   } else {
     return (
       <div className="flex h-screen">
         <div className="m-auto">
-          <Card>
+          <Card className="w-[400px]">
             <CardHeader>
               <CardTitle>Log in</CardTitle>
               <CardDescription>Click to get started</CardDescription>
             </CardHeader>
             <CardContent>
-              <WalletButton/>
+              <WalletButton />
             </CardContent>
           </Card>
         </div>
       </div>
-    )
+    );
   }
 }
