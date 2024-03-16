@@ -1,6 +1,5 @@
 'use client';
 
-import { fetchDynamicApi } from '@/api/service/dynamic';
 import Actions from '@/components/actions';
 import LoginHeader from '@/components/login-header';
 import Transactions from '@/components/transactions';
@@ -16,55 +15,8 @@ import {
 import { DynamicUserProfile, useDynamicContext } from '@/lib/dynamic';
 import { LogIn } from 'lucide-react';
 import { useEffect, useState } from 'react';
-
-async function getData() {
-  const transactions = [
-    {
-      invoice: 'INV001',
-      paymentStatus: 'Paid',
-      totalAmount: '$250.00',
-      paymentMethod: 'Credit Card',
-    },
-    {
-      invoice: 'INV002',
-      paymentStatus: 'Pending',
-      totalAmount: '$150.00',
-      paymentMethod: 'PayPal',
-    },
-    {
-      invoice: 'INV003',
-      paymentStatus: 'Unpaid',
-      totalAmount: '$350.00',
-      paymentMethod: 'Bank Transfer',
-    },
-    {
-      invoice: 'INV004',
-      paymentStatus: 'Paid',
-      totalAmount: '$450.00',
-      paymentMethod: 'Credit Card',
-    },
-    {
-      invoice: 'INV005',
-      paymentStatus: 'Paid',
-      totalAmount: '$550.00',
-      paymentMethod: 'PayPal',
-    },
-    {
-      invoice: 'INV006',
-      paymentStatus: 'Pending',
-      totalAmount: '$200.00',
-      paymentMethod: 'Bank Transfer',
-    },
-    {
-      invoice: 'INV007',
-      paymentStatus: 'Unpaid',
-      totalAmount: '$300.00',
-      paymentMethod: 'Credit Card',
-    },
-  ];
-
-  return { transactions };
-}
+import { Address, formatUnits } from 'viem';
+import { useBalance } from 'wagmi';
 
 export default function Home() {
   const [transactions, setTransactions] = useState([]);
@@ -72,6 +24,12 @@ export default function Home() {
 
   const { primaryWallet, setShowAuthFlow, setShowDynamicUserProfile } =
     useDynamicContext();
+
+  const balance = useBalance({
+    address: (primaryWallet?.address || '') as Address,
+  });
+
+  const formattedValue = formatUnits(balance.data?.value || BigInt(0), 18);
 
   const WalletButton = () =>
     primaryWallet?.address ? (
@@ -102,9 +60,9 @@ export default function Home() {
       );
       const data = await res.json();
       const priceData = await resPrice.json();
-      const emails = await fetchDynamicApi();
+      // const emails = await fetchDynamicApi();
 
-      console.log(emails);
+      // console.log(emails);
 
       setTransactions(data.result);
       setPrice(priceData.result.ethusd.substring(0, 6));
@@ -121,7 +79,16 @@ export default function Home() {
           <WalletButton />
         </div>
 
-        {/* <BalanaceChart /> */}
+        <div className="flex flex-col items-center text-lg font-medium">
+          Your Balance:
+          <span className="flex flex-col gap-4">
+            {(Number(price) * Number(formattedValue))
+              .toString()
+              .substring(0, 6)}{' '}
+            USD ({formattedValue.toString()} Ξ)
+          </span>
+        </div>
+
         <Transactions price={price} transactions={transactions} />
 
         <Actions />
