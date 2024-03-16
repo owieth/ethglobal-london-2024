@@ -1,5 +1,6 @@
 'use client';
 
+import { Icons } from '@/components/icons';
 import SendPhoneForm from '@/components/send-phone-form';
 import SendWalletForm from '@/components/send-wallet-form';
 import {
@@ -13,7 +14,6 @@ import {
 } from '@/components/ui/drawer';
 import { useDynamicContext } from '@dynamic-labs/sdk-react-core';
 import { sendTransaction, waitForTransaction } from '@wagmi/core';
-import { MoveUpRight, X } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { useState } from 'react';
 import { parseEther } from 'viem';
@@ -104,7 +104,7 @@ const Actions = () => {
     <>
       <div className="flex justify-center w-full">
         <Button size="lg" className="gap-4" onClick={() => setOpen(!open)}>
-          <MoveUpRight className="h-4 w-4" />
+          <Icons.handCoins className="w-4 h-4" />
           <span className="hidden xss:block">Pay</span>
         </Button>
       </div>
@@ -160,7 +160,7 @@ const Actions = () => {
                 className="rounded-full	"
                 onClick={() => setOpen(false)}
               >
-                <X className="h-4 w-4" />
+                <Icons.x className="h-4 w-4" />
               </Button>
             </DrawerClose>
           </DrawerFooter>
