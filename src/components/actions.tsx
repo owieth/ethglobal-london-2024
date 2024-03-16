@@ -25,10 +25,21 @@ import {
   CardHeader,
   CardTitle,
 } from './ui/card';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from './ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 
 const Actions = () => {
   const [open, setOpen] = useState(false);
+  const [value, setValue] = useState<'phonenumber' | 'qr' | 'wallet'>(
+    'phonenumber'
+  );
 
   const { primaryWallet } = useDynamicContext();
 
@@ -45,6 +56,58 @@ const Actions = () => {
     });
 
     console.log(data);
+  };
+
+  const renderAction = () => {
+    switch (value) {
+      case 'phonenumber':
+        return (
+          <Card>
+            <CardHeader>
+              <CardTitle>Phone Number</CardTitle>
+              <CardDescription>Change your password here</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <PhoneNumbers />
+            </CardContent>
+            <CardFooter>
+              <Button onClick={onSubmit}>Send</Button>
+            </CardFooter>
+          </Card>
+        );
+
+      case 'qr':
+        return (
+          <Card>
+            <CardHeader>
+              <CardTitle>QR</CardTitle>
+              <CardDescription>Change your password here</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <QRCodeSVG value={primaryWallet?.address || ''} size={256} />
+            </CardContent>
+            <CardFooter>
+              <Button onClick={onSubmit}>Send</Button>
+            </CardFooter>
+          </Card>
+        );
+
+      case 'wallet':
+        return (
+          <Card>
+            <CardHeader>
+              <CardTitle>Wallet</CardTitle>
+              <CardDescription>Change your password here</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <div className="space-y-1"></div>
+            </CardContent>
+            <CardFooter>
+              <Button onClick={onSubmit}>Send</Button>
+            </CardFooter>
+          </Card>
+        );
+    }
   };
 
   return (
@@ -71,82 +134,37 @@ const Actions = () => {
           </DrawerHeader>
 
           <div className="flex flex-col justify-center items-center gap-4 xs:flex-row">
-            {/* <Button onClick={onSubmit}>Phone Number</Button> */}
-            {/* <Button onClick={onSubmit}>QR</Button> */}
-            {/* <Button onClick={onSubmit}>Wallet Address</Button> */}
-            <Tabs defaultValue="phonenumber" className="w-[600px]">
-              {/* <div className='hidden xs:visible'> */}
+            <Tabs
+              defaultValue="phonenumber"
+              onValueChange={val => setValue(val as any)}
+              className="w-[600px] hidden xs:block"
+            >
               <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="phonenumber">Phone Number</TabsTrigger>
                 <TabsTrigger value="qr">QR</TabsTrigger>
                 <TabsTrigger value="wallet">Wallet</TabsTrigger>
               </TabsList>
-              {/* </div> */}
-
-              {/* <div className='visible xs:hidden'>
-                <Select>
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Select a fruit" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Fruits</SelectLabel>
-                      <SelectItem value="apple">Apple</SelectItem>
-                      <SelectItem value="banana">Banana</SelectItem>
-                      <SelectItem value="blueberry">Blueberry</SelectItem>
-                      <SelectItem value="grapes">Grapes</SelectItem>
-                      <SelectItem value="pineapple">Pineapple</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </div> */}
-
-              <TabsContent value="phonenumber">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Phone Number</CardTitle>
-                    <CardDescription>Change your password here</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-2">
-                    <PhoneNumbers />
-                  </CardContent>
-                  <CardFooter>
-                    <Button onClick={onSubmit}>Send</Button>
-                  </CardFooter>
-                </Card>
-              </TabsContent>
-              <TabsContent value="qr">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>QR</CardTitle>
-                    <CardDescription>Change your password here</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-2">
-                    <QRCodeSVG
-                      value={primaryWallet?.address || ''}
-                      size={256}
-                    />
-                  </CardContent>
-                  <CardFooter>
-                    <Button onClick={onSubmit}>Send</Button>
-                  </CardFooter>
-                </Card>
-              </TabsContent>
-              <TabsContent value="wallet">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Wallet</CardTitle>
-                    <CardDescription>Change your password here</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-2">
-                    <div className="space-y-1"></div>
-                  </CardContent>
-                  <CardFooter>
-                    <Button onClick={onSubmit}>Send</Button>
-                  </CardFooter>
-                </Card>
-              </TabsContent>
+              <TabsContent value="phonenumber">{renderAction()}</TabsContent>
+              <TabsContent value="qr">{renderAction()}</TabsContent>
+              <TabsContent value="wallet">{renderAction()}</TabsContent>
             </Tabs>
+
+            <div className="block xs:hidden">
+              <Select onValueChange={val => setValue(val as any)}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Select type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="phonenumber">Phone Number</SelectItem>
+                    <SelectItem value="qr">QR</SelectItem>
+                    <SelectItem value="wallet">wallet</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+
+              {renderAction()}
+            </div>
           </div>
 
           <DrawerFooter>
