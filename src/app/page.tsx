@@ -1,7 +1,10 @@
+'use client';
+
 import Actions from '@/components/actions';
 import Transactions from '@/components/transactions';
 import { Button } from '@/components/ui/button';
-import { DynamicWidget } from '@/lib/dynamic';
+import { DynamicWidget, useDynamicContext } from '@/lib/dynamic';
+import { useEffect, useState } from 'react';
 
 async function getData() {
   const transactions = [
@@ -52,8 +55,27 @@ async function getData() {
   return { transactions };
 }
 
-export default async function Home() {
-  const { transactions } = await getData();
+export default function Home() {
+  const [transactions, setTransactions] = useState([]);
+
+  const { primaryWallet } = useDynamicContext();
+
+  useEffect(() => {
+    const getTransactions = async () => {
+      if (!primaryWallet?.address) return;
+
+      const res = await fetch(
+        new URL(
+          `https://api-sepolia.etherscan.io/api?module=account&action=txlist&address=${primaryWallet.address}&startblock=0&endblock=99999999&page=1&offset=10&sort=asc&apikey=9DMYEXFSETNIBCGADF3JRXZACKAKX71S44`
+        )
+      );
+      const data = await res.json();
+
+      setTransactions(data.result);
+    };
+
+    getTransactions();
+  }, [primaryWallet?.address]);
 
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-between p-12 md:p-24">

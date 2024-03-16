@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Table,
   TableBody,
@@ -10,7 +12,13 @@ import {
 } from '@/components/ui/table';
 
 type Props = {
-  transactions: any;
+  transactions: {
+    blockHash: string;
+    from: string;
+    to: string;
+    timeStamp: number;
+    value: number;
+  }[];
 };
 
 const Transactions = ({ transactions }: Props) => {
@@ -19,20 +27,20 @@ const Transactions = ({ transactions }: Props) => {
       <TableCaption>A list of your recent invoices.</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[100px]">Invoice</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Method</TableHead>
-          <TableHead className="text-right">Amount</TableHead>
+          <TableHead>From</TableHead>
+          <TableHead>To</TableHead>
+          <TableHead>Value</TableHead>
+          <TableHead>Time</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {transactions.map(transaction => (
-          <TableRow key={transaction.invoice}>
-            <TableCell className="font-medium">{transaction.invoice}</TableCell>
-            <TableCell>{transaction.paymentStatus}</TableCell>
-            <TableCell>{transaction.paymentMethod}</TableCell>
+        {transactions.map((transaction, i) => (
+          <TableRow key={i}>
+            <TableCell className="font-medium">{transaction.from}</TableCell>
+            <TableCell>{transaction.to}</TableCell>
+            <TableCell>{transaction.value}</TableCell>
             <TableCell className="text-right">
-              {transaction.totalAmount}
+              {transaction.timeStamp}
             </TableCell>
           </TableRow>
         ))}
