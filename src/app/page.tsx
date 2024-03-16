@@ -2,8 +2,10 @@
 
 import Actions from '@/components/actions';
 import Transactions from '@/components/transactions';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { DynamicWidget, useDynamicContext } from '@/lib/dynamic';
+import { DynamicUserProfile, useDynamicContext } from '@/lib/dynamic';
+import { LogIn } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 async function getData() {
@@ -58,7 +60,21 @@ async function getData() {
 export default function Home() {
   const [transactions, setTransactions] = useState([]);
 
-  const { primaryWallet } = useDynamicContext();
+  const { primaryWallet, setShowAuthFlow, setShowDynamicUserProfile } =
+    useDynamicContext();
+
+  const WalletButton = () =>
+    primaryWallet?.address ? (
+      <Avatar onClick={() => setShowDynamicUserProfile(true)}>
+        <AvatarImage src="https://github.com/shadcn.png" />
+        <AvatarFallback>CN</AvatarFallback>
+      </Avatar>
+    ) : (
+      <Button onClick={() => setShowAuthFlow(true)} className="flex gap-4">
+        <LogIn className="h-4 w-4" />
+        Get started
+      </Button>
+    );
 
   useEffect(() => {
     const getTransactions = async () => {
@@ -78,24 +94,18 @@ export default function Home() {
   }, [primaryWallet?.address]);
 
   return (
-    <main className="relative flex min-h-screen flex-col items-center justify-between p-12 md:p-24">
-      <div className="flex justify-between items-center w-full">
+    <main className="relative flex min-h-screen flex-col items-center justify-between p-6 md:p-12">
+      <div className="flex justify-between items-center w-full mb-8">
         <h1>Hey, welcome back 👋</h1>
-
-        <DynamicWidget
-          innerButtonComponent={
-            <Button variant="outline" size="icon">
-              {/* <LogIn className='h-4 w-4' /> */}
-              Get started
-            </Button>
-          }
-        />
+        <WalletButton />
       </div>
 
       {/* <BalanaceChart /> */}
       <Transactions transactions={transactions} />
 
       <Actions />
+
+      <DynamicUserProfile />
     </main>
   );
 }
