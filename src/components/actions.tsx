@@ -94,59 +94,59 @@ const Actions = () => {
 
       <Drawer open={open}>
         <DrawerContent>
-          <DrawerHeader className="flex flex-col justify-center">
-            <DrawerTitle>How do you want to proceed?</DrawerTitle>
-            <DrawerDescription>
-              Select either one of the options below.
-            </DrawerDescription>
-          </DrawerHeader>
-
-          <div className="flex flex-col justify-center items-center gap-4 xs:flex-row">
-            <Tabs
-              defaultValue="phonenumber"
-              onValueChange={val => setValue(val as any)}
-              className="w-[600px] hidden xs:block"
-            >
-              <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="phonenumber">Phone Number</TabsTrigger>
-                <TabsTrigger value="qr">QR</TabsTrigger>
-                <TabsTrigger value="wallet">Wallet</TabsTrigger>
-              </TabsList>
-              <TabsContent value="phonenumber">{renderAction()}</TabsContent>
-              <TabsContent value="qr">{renderAction()}</TabsContent>
-              <TabsContent value="wallet">{renderAction()}</TabsContent>
-            </Tabs>
-
-            <div className="block xs:hidden">
-              <Select onValueChange={val => setValue(val as any)}>
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Select type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="phonenumber">Phone Number</SelectItem>
-                    <SelectItem value="qr">QR</SelectItem>
-                    <SelectItem value="wallet">wallet</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-
-              {renderAction()}
-            </div>
-          </div>
-
-          <DrawerFooter>
-            <DrawerClose>
-              <Button
-                variant="outline"
-                size="icon"
-                className="rounded-full	"
-                onClick={() => setOpen(false)}
+          <div>
+            <DrawerHeader className="flex flex-col justify-center items-center m-6">
+              <DrawerTitle>How do you want to proceed?</DrawerTitle>
+              <DrawerDescription>
+                Select either one of the options below.
+              </DrawerDescription>
+            </DrawerHeader>
+            <div className="flex flex-col justify-center items-center gap-4 xs:flex-row">
+              <Tabs
+                defaultValue="phonenumber"
+                onValueChange={val => setValue(val as any)}
+                className="w-[600px] hidden xs:block"
               >
-                <Icons.x className="h-4 w-4" />
-              </Button>
-            </DrawerClose>
-          </DrawerFooter>
+                <TabsList className="grid w-full grid-cols-3">
+                  <TabsTrigger value="phonenumber">Phone Number</TabsTrigger>
+                  <TabsTrigger value="qr">QR</TabsTrigger>
+                  <TabsTrigger value="wallet">Wallet</TabsTrigger>
+                </TabsList>
+                <TabsContent value="phonenumber">{renderAction()}</TabsContent>
+                <TabsContent value="qr">{renderAction()}</TabsContent>
+                <TabsContent value="wallet">{renderAction()}</TabsContent>
+              </Tabs>
+
+              <div className="block xs:hidden">
+                <Select onValueChange={val => setValue(val as any)}>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Select type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectItem value="phonenumber">Phone Number</SelectItem>
+                      <SelectItem value="qr">QR</SelectItem>
+                      <SelectItem value="wallet">wallet</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+
+                {renderAction()}
+              </div>
+            </div>
+            <DrawerFooter>
+              <DrawerClose>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="rounded-full	"
+                  onClick={() => setOpen(false)}
+                >
+                  <Icons.x className="h-4 w-4" />
+                </Button>
+              </DrawerClose>
+            </DrawerFooter>
+          </div>
         </DrawerContent>
       </Drawer>
     </>
