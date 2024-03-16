@@ -1,20 +1,5 @@
 'use client';
 
-import {
-  ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from '@tanstack/react-table';
-import { MoreHorizontal } from 'lucide-react';
-import * as React from 'react';
-
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -32,7 +17,21 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { shortenBytes32 } from '@/lib/utils';
+import {
+  ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+  VisibilityState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
+import { MoreHorizontal } from 'lucide-react';
 import Link from 'next/link';
+import * as React from 'react';
 import { formatUnits } from 'viem';
 
 export type Transaction = {
@@ -43,7 +42,7 @@ export type Transaction = {
   blockHash: string;
 };
 
-export const columns: ColumnDef<Transaction>[] = [
+export const getColumns = (price: string): ColumnDef<Transaction>[] => [
   {
     accessorKey: 'from',
     header: 'From',
@@ -82,7 +81,14 @@ export const columns: ColumnDef<Transaction>[] = [
     cell: ({ row }) => {
       const value = row.original.value;
 
-      return <span>{formatUnits(BigInt(value), 18).toString()} Ξ</span>;
+      const formattedValue = formatUnits(BigInt(value), 18);
+
+      return (
+        <span>
+          {Number(price) * Number(formattedValue)} USD (
+          {formattedValue.toString()} Ξ)
+        </span>
+      );
     },
   },
   {
@@ -126,10 +132,11 @@ export const columns: ColumnDef<Transaction>[] = [
 ];
 
 type Props = {
+  price: string;
   transactions: Transaction[];
 };
 
-const Transactions = ({ transactions }: Props) => {
+const Transactions = ({ price, transactions }: Props) => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -140,7 +147,7 @@ const Transactions = ({ transactions }: Props) => {
 
   const table = useReactTable({
     data: transactions,
-    columns,
+    columns: getColumns(price),
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -199,7 +206,7 @@ const Transactions = ({ transactions }: Props) => {
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
+                  colSpan={getColumns.length}
                   className="h-24 text-center"
                 >
                   No results.

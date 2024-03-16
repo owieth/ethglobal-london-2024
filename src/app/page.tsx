@@ -66,6 +66,7 @@ async function getData() {
 
 export default function Home() {
   const [transactions, setTransactions] = useState([]);
+  const [price, setPrice] = useState('0');
 
   const { primaryWallet, setShowAuthFlow, setShowDynamicUserProfile } =
     useDynamicContext();
@@ -92,9 +93,16 @@ export default function Home() {
           `https://api-sepolia.etherscan.io/api?module=account&action=txlist&address=${primaryWallet.address}&startblock=0&endblock=99999999&page=1&offset=10&sort=asc&apikey=9DMYEXFSETNIBCGADF3JRXZACKAKX71S44`
         )
       );
+      const resPrice = await fetch(
+        new URL(
+          'https://api.etherscan.io/api?module=stats&action=ethprice&apikey=9DMYEXFSETNIBCGADF3JRXZACKAKX71S44'
+        )
+      );
       const data = await res.json();
+      const priceData = await resPrice.json();
 
       setTransactions(data.result);
+      setPrice(priceData.result.ethusd.substring(0, 6));
     };
 
     getTransactions();
@@ -109,7 +117,7 @@ export default function Home() {
         </div>
 
         {/* <BalanaceChart /> */}
-        <Transactions transactions={transactions} />
+        <Transactions price={price} transactions={transactions} />
 
         <Actions />
 
