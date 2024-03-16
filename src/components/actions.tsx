@@ -93,7 +93,7 @@ const Actions = () => {
               <CardDescription>Paste the wallet to send funds</CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
-              <SendWalletForm />
+              <SendWalletForm callback={() => setOpen(false)} />
             </CardContent>
           </Card>
         );

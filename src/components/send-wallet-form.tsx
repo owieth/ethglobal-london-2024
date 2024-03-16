@@ -12,13 +12,21 @@ import { sendWalletFormSchema } from '@/schema/send';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { sendTransaction, waitForTransaction } from '@wagmi/core';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { parseEther } from 'viem';
 import { z } from 'zod';
 
 type FormData = z.infer<typeof sendWalletFormSchema>;
 
-export default function SendWalletForm() {
+type Props = {
+  callback: () => void;
+};
+
+export default function SendWalletForm({ callback }: Props) {
   const onSubmit = async (data: FormData) => {
+    callback();
+
+    toast.info('Pending...');
     const validatedFields = sendWalletFormSchema.safeParse(data);
 
     if (!validatedFields.success) {
@@ -30,13 +38,18 @@ export default function SendWalletForm() {
       value: parseEther(data.amount.toString()),
     });
 
-    console.log(hash);
-
-    const transactionConfirmed = await waitForTransaction({
-      hash,
-    });
-    // TODO: set toast success
-    console.log(transactionConfirmed);
+    toast.promise(
+      waitForTransaction({
+        hash,
+      }),
+      {
+        loading: 'Pending...',
+        success: data => {
+          return `Transaction finished!`;
+        },
+        error: 'Error',
+      }
+    );
   };
 
   const form = useForm<FormData>({
