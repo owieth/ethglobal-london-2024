@@ -1,5 +1,6 @@
 'use client';
 
+import SendWalletForm from '@/components/send-wallet-form';
 import {
   Drawer,
   DrawerClose,
@@ -40,7 +41,6 @@ const Actions = () => {
   const [value, setValue] = useState<'phonenumber' | 'qr' | 'wallet'>(
     'phonenumber'
   );
-
   const { primaryWallet } = useDynamicContext();
 
   const onSubmit = async () => {
@@ -86,9 +86,6 @@ const Actions = () => {
             <CardContent className="space-y-2">
               <QRCodeSVG value={primaryWallet?.address || ''} size={256} />
             </CardContent>
-            <CardFooter>
-              <Button onClick={onSubmit}>Send</Button>
-            </CardFooter>
           </Card>
         );
 
@@ -97,14 +94,11 @@ const Actions = () => {
           <Card>
             <CardHeader>
               <CardTitle>Wallet</CardTitle>
-              <CardDescription>Change your password here</CardDescription>
+              <CardDescription>Paste the wallet to send funds</CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
-              <div className="space-y-1"></div>
+              <SendWalletForm />
             </CardContent>
-            <CardFooter>
-              <Button onClick={onSubmit}>Send</Button>
-            </CardFooter>
           </Card>
         );
     }
