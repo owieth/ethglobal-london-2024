@@ -9,8 +9,10 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from '@/components/ui/drawer';
+import { useDynamicContext } from '@dynamic-labs/sdk-react-core';
 import { sendTransaction, waitForTransaction } from '@wagmi/core';
 import { MoveDownLeft, MoveUpRight, X } from 'lucide-react';
+import { QRCodeSVG } from 'qrcode.react';
 import { useState } from 'react';
 import { parseEther } from 'viem';
 import PhoneNumbers from './phone-numbers';
@@ -27,6 +29,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 
 const Actions = () => {
   const [open, setOpen] = useState(false);
+
+  const { primaryWallet } = useDynamicContext();
 
   const onSubmit = async () => {
     const { hash } = await sendTransaction({
@@ -118,7 +122,10 @@ const Actions = () => {
                     <CardDescription>Change your password here</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-2">
-                    <div className="space-y-1"></div>
+                    <QRCodeSVG
+                      value={primaryWallet?.address || ''}
+                      size={256}
+                    />
                   </CardContent>
                   <CardFooter>
                     <Button onClick={onSubmit}>Send</Button>
