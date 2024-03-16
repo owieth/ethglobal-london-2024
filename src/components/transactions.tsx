@@ -39,7 +39,7 @@ export type Transaction = {
   to: string;
   value: number;
   timeStamp: number;
-  blockHash: string;
+  hash: string;
 };
 
 export const getColumns = (price: string): ColumnDef<Transaction>[] => [
@@ -104,7 +104,7 @@ export const getColumns = (price: string): ColumnDef<Transaction>[] => [
     id: 'actions',
     enableHiding: false,
     cell: ({ row }) => {
-      const blockHash = row.original.blockHash;
+      const hash = row.original.hash;
 
       return (
         <DropdownMenu>
@@ -118,7 +118,7 @@ export const getColumns = (price: string): ColumnDef<Transaction>[] => [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem>
               <Link
-                href={`https://sepolia.etherscan.io/tx/${blockHash}`}
+                href={`https://sepolia.etherscan.io/tx/${hash}`}
                 target="_blank"
               >
                 See Transactions
