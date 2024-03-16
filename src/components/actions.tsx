@@ -9,7 +9,7 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from '@/components/ui/drawer';
-import { MoveDownLeft, MoveUpRight } from 'lucide-react';
+import { MoveDownLeft, MoveUpRight, X } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from './ui/button';
 
@@ -34,15 +34,28 @@ const Actions = () => {
 
       <Drawer open={open}>
         <DrawerContent>
-          <DrawerHeader>
-            <DrawerTitle>Are you absolutely sure?</DrawerTitle>
-            <DrawerDescription>This action cannot be undone.</DrawerDescription>
+          <DrawerHeader className="flex flex-col justify-center">
+            <DrawerTitle>How do you want to proceed?</DrawerTitle>
+            <DrawerDescription>
+              Select either one of the options below.
+            </DrawerDescription>
           </DrawerHeader>
+
+          <div className="flex flex-col justify-center items-center gap-4 xs:flex-row">
+            <Button onClick={onSubmit}>Phone Number</Button>
+            <Button onClick={onSubmit}>QR</Button>
+            <Button onClick={onSubmit}>Wallet Address</Button>
+          </div>
+
           <DrawerFooter>
-            <Button onClick={onSubmit}>Submit</Button>
             <DrawerClose>
-              <Button variant="outline" onClick={() => setOpen(false)}>
-                Cancel
+              <Button
+                variant="outline"
+                size="icon"
+                className="rounded-full	"
+                onClick={() => setOpen(false)}
+              >
+                <X className="h-4 w-4" />
               </Button>
             </DrawerClose>
           </DrawerFooter>
