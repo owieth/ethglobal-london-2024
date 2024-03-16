@@ -3,7 +3,7 @@
 import Actions from '@/components/actions';
 import LoginHeader from '@/components/login-header';
 import Transactions from '@/components/transactions';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -34,8 +34,7 @@ export default function Home() {
   const WalletButton = () =>
     primaryWallet?.address ? (
       <Avatar onClick={() => setShowDynamicUserProfile(true)}>
-        <AvatarImage src="https://github.com/shadcn.png" />
-        <AvatarFallback>CN</AvatarFallback>
+        <AvatarImage src="https://avatars.githubusercontent.com/u/96269716" />
       </Avatar>
     ) : (
       <Button onClick={() => setShowAuthFlow(true)} className="flex gap-4">
