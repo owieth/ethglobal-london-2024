@@ -2,6 +2,7 @@
 
 import { fetchDynamicApi } from '@/api/service/dynamic';
 import Actions from '@/components/actions';
+import LoginHeader from '@/components/login-header';
 import Transactions from '@/components/transactions';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -114,7 +115,7 @@ export default function Home() {
 
   if (primaryWallet !== null) {
     return (
-      <div className="relative flex min-h-screen flex-col items-center justify-between w-full pt-12">
+      <div className="relative flex min-h-screen flex-col items-center justify-between w-full pt-12 p-10">
         <div className="flex justify-between items-center w-full mb-8">
           <h1>Hey, welcome back 👋</h1>
           <WalletButton />
@@ -132,6 +133,7 @@ export default function Home() {
     return (
       <div className="flex h-screen">
         <div className="m-auto">
+          <LoginHeader />
           <Card className="w-[400px]">
             <CardHeader>
               <CardTitle>Log in</CardTitle>
