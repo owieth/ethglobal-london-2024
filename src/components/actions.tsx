@@ -13,6 +13,7 @@ import { sendTransaction, waitForTransaction } from '@wagmi/core';
 import { MoveDownLeft, MoveUpRight, X } from 'lucide-react';
 import { useState } from 'react';
 import { parseEther } from 'viem';
+import PhoneNumbers from './phone-numbers';
 import { Button } from './ui/button';
 import {
   Card,
@@ -103,7 +104,7 @@ const Actions = () => {
                     <CardDescription>Change your password here</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-2">
-                    <div className="space-y-1"></div>
+                    <PhoneNumbers />
                   </CardContent>
                   <CardFooter>
                     <Button onClick={onSubmit}>Send</Button>
