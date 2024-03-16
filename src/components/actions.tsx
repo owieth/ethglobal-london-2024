@@ -13,10 +13,8 @@ import {
   DrawerTitle,
 } from '@/components/ui/drawer';
 import { useDynamicContext } from '@dynamic-labs/sdk-react-core';
-import { sendTransaction, waitForTransaction } from '@wagmi/core';
 import { QRCodeSVG } from 'qrcode.react';
 import { useState } from 'react';
-import { parseEther } from 'viem';
 import { Button } from './ui/button';
 import {
   Card,
@@ -41,21 +39,6 @@ const Actions = () => {
     'phonenumber'
   );
   const { primaryWallet } = useDynamicContext();
-
-  const onSubmit = async () => {
-    const { hash } = await sendTransaction({
-      to: '0x94B2ceA71F9bA7A6e55c40bE320033D1151145B6',
-      value: parseEther('0.01'),
-    });
-
-    console.log(hash);
-
-    const data = await waitForTransaction({
-      hash,
-    });
-
-    console.log(data);
-  };
 
   const renderAction = () => {
     switch (value) {
