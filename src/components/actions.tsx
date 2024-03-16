@@ -1,5 +1,6 @@
 'use client';
 
+import SendPhoneForm from '@/components/send-phone-form';
 import SendWalletForm from '@/components/send-wallet-form';
 import {
   Drawer,
@@ -33,7 +34,6 @@ import {
   SelectValue,
 } from './ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import SendPhoneForm from "@/components/send-phone-form";
 
 const Actions = () => {
   const [open, setOpen] = useState(false);
@@ -67,7 +67,7 @@ const Actions = () => {
               <CardDescription>Change your password here</CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
-              <SendPhoneForm/>
+              <SendPhoneForm />
             </CardContent>
           </Card>
         );

@@ -33,7 +33,7 @@ import {
 } from '@/components/ui/table';
 import { shortenBytes32 } from '@/lib/utils';
 import Link from 'next/link';
-import { parseEther } from 'viem';
+import { formatUnits } from 'viem';
 
 export type Transaction = {
   from: string;
@@ -82,7 +82,7 @@ export const columns: ColumnDef<Transaction>[] = [
     cell: ({ row }) => {
       const value = row.original.value;
 
-      return <span>{parseEther(value.toString()).toString()}</span>;
+      return <span>{formatUnits(BigInt(value), 18).toString()} Ξ</span>;
     },
   },
   {
@@ -91,7 +91,7 @@ export const columns: ColumnDef<Transaction>[] = [
     cell: ({ row }) => {
       const timeStamp = row.original.timeStamp;
 
-      return <span> {new Date(timeStamp * 1000).toLocaleString()} </span>;
+      return <span>{new Date(timeStamp * 1000).toLocaleString()}</span>;
     },
   },
   {
