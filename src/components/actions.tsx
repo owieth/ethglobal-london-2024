@@ -14,6 +14,15 @@ import { MoveDownLeft, MoveUpRight, X } from 'lucide-react';
 import { useState } from 'react';
 import { parseEther } from 'viem';
 import { Button } from './ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from './ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 
 const Actions = () => {
   const [open, setOpen] = useState(false);
@@ -57,9 +66,79 @@ const Actions = () => {
           </DrawerHeader>
 
           <div className="flex flex-col justify-center items-center gap-4 xs:flex-row">
-            <Button onClick={onSubmit}>Phone Number</Button>
-            <Button onClick={onSubmit}>QR</Button>
-            <Button onClick={onSubmit}>Wallet Address</Button>
+            {/* <Button onClick={onSubmit}>Phone Number</Button> */}
+            {/* <Button onClick={onSubmit}>QR</Button> */}
+            {/* <Button onClick={onSubmit}>Wallet Address</Button> */}
+            <Tabs defaultValue="phonenumber" className="w-[600px]">
+              {/* <div className='hidden xs:visible'> */}
+              <TabsList className="grid w-full grid-cols-3">
+                <TabsTrigger value="phonenumber">Phone Number</TabsTrigger>
+                <TabsTrigger value="qr">QR</TabsTrigger>
+                <TabsTrigger value="wallet">Wallet</TabsTrigger>
+              </TabsList>
+              {/* </div> */}
+
+              {/* <div className='visible xs:hidden'>
+                <Select>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Select a fruit" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Fruits</SelectLabel>
+                      <SelectItem value="apple">Apple</SelectItem>
+                      <SelectItem value="banana">Banana</SelectItem>
+                      <SelectItem value="blueberry">Blueberry</SelectItem>
+                      <SelectItem value="grapes">Grapes</SelectItem>
+                      <SelectItem value="pineapple">Pineapple</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div> */}
+
+              <TabsContent value="phonenumber">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Phone Number</CardTitle>
+                    <CardDescription>Change your password here</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-2">
+                    <div className="space-y-1"></div>
+                  </CardContent>
+                  <CardFooter>
+                    <Button onClick={onSubmit}>Send</Button>
+                  </CardFooter>
+                </Card>
+              </TabsContent>
+              <TabsContent value="qr">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>QR</CardTitle>
+                    <CardDescription>Change your password here</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-2">
+                    <div className="space-y-1"></div>
+                  </CardContent>
+                  <CardFooter>
+                    <Button onClick={onSubmit}>Send</Button>
+                  </CardFooter>
+                </Card>
+              </TabsContent>
+              <TabsContent value="wallet">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Wallet</CardTitle>
+                    <CardDescription>Change your password here</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-2">
+                    <div className="space-y-1"></div>
+                  </CardContent>
+                  <CardFooter>
+                    <Button onClick={onSubmit}>Send</Button>
+                  </CardFooter>
+                </Card>
+              </TabsContent>
+            </Tabs>
           </div>
 
           <DrawerFooter>
