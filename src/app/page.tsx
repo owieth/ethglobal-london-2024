@@ -2,11 +2,12 @@
 
 import Actions from '@/components/actions';
 import Transactions from '@/components/transactions';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { DynamicUserProfile, useDynamicContext } from '@/lib/dynamic';
-import { LogIn } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar';
+import {Button} from '@/components/ui/button';
+import {DynamicUserProfile, useDynamicContext} from '@/lib/dynamic';
+import {LogIn} from 'lucide-react';
+import {useEffect, useState} from 'react';
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 
 async function getData() {
   const transactions = [
@@ -54,24 +55,24 @@ async function getData() {
     },
   ];
 
-  return { transactions };
+  return {transactions};
 }
 
 export default function Home() {
   const [transactions, setTransactions] = useState([]);
 
-  const { primaryWallet, setShowAuthFlow, setShowDynamicUserProfile } =
+  const {primaryWallet, setShowAuthFlow, setShowDynamicUserProfile} =
     useDynamicContext();
 
   const WalletButton = () =>
     primaryWallet?.address ? (
       <Avatar onClick={() => setShowDynamicUserProfile(true)}>
-        <AvatarImage src="https://github.com/shadcn.png" />
+        <AvatarImage src="https://github.com/shadcn.png"/>
         <AvatarFallback>CN</AvatarFallback>
       </Avatar>
     ) : (
       <Button onClick={() => setShowAuthFlow(true)} className="flex gap-4">
-        <LogIn className="h-4 w-4" />
+        <LogIn className="h-4 w-4"/>
         Get started
       </Button>
     );
@@ -93,19 +94,37 @@ export default function Home() {
     getTransactions();
   }, [primaryWallet?.address]);
 
-  return (
-    <main className="relative flex min-h-screen flex-col items-center justify-between p-6 md:p-12">
-      <div className="flex justify-between items-center w-full mb-8">
-        <h1>Hey, welcome back 👋</h1>
-        <WalletButton />
+  if (primaryWallet !== null) {
+    return (
+      <div className="relative flex min-h-screen flex-col items-center justify-between p-6 md:p-12">
+        <div className="flex justify-between items-center w-full mb-8">
+          <h1>Hey, welcome back 👋</h1>
+          <WalletButton/>
+        </div>
+
+        {/* <BalanaceChart /> */}
+        <Transactions transactions={transactions}/>
+
+        <Actions/>
+
+        <DynamicUserProfile/>
       </div>
-
-      {/* <BalanaceChart /> */}
-      <Transactions transactions={transactions} />
-
-      <Actions />
-
-      <DynamicUserProfile />
-    </main>
-  );
+    )
+  } else {
+    return (
+      <div className="flex h-screen">
+        <div className="m-auto">
+          <Card>
+            <CardHeader>
+              <CardTitle>Log in</CardTitle>
+              <CardDescription>Click to get started</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <WalletButton/>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    )
+  }
 }
