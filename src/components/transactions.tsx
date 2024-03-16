@@ -1,57 +1,235 @@
 'use client';
 
 import {
+  ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+  VisibilityState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
+import { MoreHorizontal } from 'lucide-react';
+import * as React from 'react';
+
+import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { shortenBytes32 } from '@/lib/utils';
+import Link from 'next/link';
+import { parseEther } from 'viem';
+
+export type Transaction = {
+  from: string;
+  to: string;
+  value: number;
+  timeStamp: number;
+  blockHash: string;
+};
+
+export const columns: ColumnDef<Transaction>[] = [
+  {
+    accessorKey: 'from',
+    header: 'From',
+    cell: ({ row }) => {
+      const from = row.original.from;
+
+      return (
+        <Link
+          href={`https://sepolia.etherscan.io/address/${from}`}
+          target="_blank"
+        >
+          {shortenBytes32(from)}
+        </Link>
+      );
+    },
+  },
+  {
+    accessorKey: 'to',
+    header: 'To',
+    cell: ({ row }) => {
+      const to = row.original.to;
+
+      return (
+        <Link
+          href={`https://sepolia.etherscan.io/address/${to}`}
+          target="_blank"
+        >
+          {shortenBytes32(to)}
+        </Link>
+      );
+    },
+  },
+  {
+    accessorKey: 'value',
+    header: 'Value',
+    cell: ({ row }) => {
+      const value = row.original.value;
+
+      return <span>{parseEther(value.toString()).toString()}</span>;
+    },
+  },
+  {
+    accessorKey: 'timeStamp',
+    header: 'Date',
+    cell: ({ row }) => {
+      const timeStamp = row.original.timeStamp;
+
+      return <span> {new Date(timeStamp * 1000).toLocaleString()} </span>;
+    },
+  },
+  {
+    id: 'actions',
+    enableHiding: false,
+    cell: ({ row }) => {
+      const blockHash = row.original.blockHash;
+
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem>
+              <Link
+                href={`https://sepolia.etherscan.io/tx/${blockHash}`}
+                target="_blank"
+              >
+                See Transactions
+              </Link>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
+  },
+];
 
 type Props = {
-  transactions: {
-    blockHash: string;
-    from: string;
-    to: string;
-    timeStamp: number;
-    value: number;
-  }[];
+  transactions: Transaction[];
 };
 
 const Transactions = ({ transactions }: Props) => {
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    []
+  );
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = React.useState({});
+
+  const table = useReactTable({
+    data: transactions,
+    columns,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility,
+      rowSelection,
+    },
+  });
+
   return (
-    <Table>
-      <TableCaption>A list of your recent invoices.</TableCaption>
-      <TableHeader>
-        <TableRow>
-          <TableHead>From</TableHead>
-          <TableHead>To</TableHead>
-          <TableHead>Value</TableHead>
-          <TableHead>Time</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {transactions.map((transaction, i) => (
-          <TableRow key={i}>
-            <TableCell className="font-medium">{transaction.from}</TableCell>
-            <TableCell>{transaction.to}</TableCell>
-            <TableCell>{transaction.value}</TableCell>
-            <TableCell className="text-right">
-              {transaction.timeStamp}
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-      <TableFooter>
-        <TableRow>
-          <TableCell colSpan={3}>Total</TableCell>
-          <TableCell className="text-right">$2,500.00</TableCell>
-        </TableRow>
-      </TableFooter>
-    </Table>
+    <div className="w-full">
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map(headerGroup => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map(header => {
+                  return (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map(row => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && 'selected'}
+                >
+                  {row.getVisibleCells().map(cell => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+      <div className="flex items-center justify-end space-x-2 py-4">
+        <div className="space-x-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            Previous
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            Next
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 };
 
