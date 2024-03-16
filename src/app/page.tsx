@@ -1,5 +1,4 @@
 import Actions from '@/components/actions';
-import BalanaceChart from '@/components/balance-chart';
 import { Button } from '@/components/ui/button';
 import { DynamicWidget } from '@/lib/dynamic';
 
@@ -17,7 +16,7 @@ export default function Home() {
         />
       </div>
 
-      <BalanaceChart />
+      {/* <BalanaceChart /> */}
 
       <Actions />
     </main>
