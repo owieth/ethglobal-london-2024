@@ -1,12 +1,15 @@
 import { Button } from '@/components/ui/button';
 import { MoveDownLeft, MoveUpRight } from 'lucide-react';
 
+import BalanaceChart from '@/components/balance-chart';
 import { DynamicWidget } from '@/lib/dynamic';
 
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-12 md:p-24">
       <DynamicWidget />
+
+      <BalanaceChart />
 
       <div className="flex justify-between w-full flex-col xs:flex-row gap-4">
         <Button size="lg" className="gap-4">

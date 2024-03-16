@@ -1,4 +1,5 @@
-// 'use client';
+'use client';
+
 import {
   LineChart,
   Table,
@@ -453,19 +454,7 @@ const BalanaceChart = () => {
               Value
             </TableHeaderCell>
             <TableHeaderCell className="text-right text-tremor-content-strong dark:text-dark-tremor-content-strong">
-              Invested
-            </TableHeaderCell>
-            <TableHeaderCell className="text-right text-tremor-content-strong dark:text-dark-tremor-content-strong">
-              Cashflow
-            </TableHeaderCell>
-            <TableHeaderCell className="text-right text-tremor-content-strong dark:text-dark-tremor-content-strong">
-              Gain
-            </TableHeaderCell>
-            <TableHeaderCell className="text-right text-tremor-content-strong dark:text-dark-tremor-content-strong">
-              Realized
-            </TableHeaderCell>
-            <TableHeaderCell className="text-right text-tremor-content-strong dark:text-dark-tremor-content-strong">
-              Dividends
+              Date
             </TableHeaderCell>
           </TableRow>
         </TableHead>
