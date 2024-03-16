@@ -9,14 +9,29 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from '@/components/ui/drawer';
+import { sendTransaction, waitForTransaction } from '@wagmi/core';
 import { MoveDownLeft, MoveUpRight, X } from 'lucide-react';
 import { useState } from 'react';
+import { parseEther } from 'viem';
 import { Button } from './ui/button';
 
 const Actions = () => {
   const [open, setOpen] = useState(false);
 
-  const onSubmit = () => {};
+  const onSubmit = async () => {
+    const { hash } = await sendTransaction({
+      to: '0x94B2ceA71F9bA7A6e55c40bE320033D1151145B6',
+      value: parseEther('0.01'),
+    });
+
+    console.log(hash);
+
+    const data = await waitForTransaction({
+      hash,
+    });
+
+    console.log(data);
+  };
 
   return (
     <>
