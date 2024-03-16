@@ -62,7 +62,7 @@ const Actions = () => {
               <CardTitle>QR</CardTitle>
               <CardDescription>Change your password here</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-2">
+            <CardContent className="space-y-2 flex justify-center">
               <QRCodeSVG value={primaryWallet?.address || ''} size={256} />
             </CardContent>
           </Card>
