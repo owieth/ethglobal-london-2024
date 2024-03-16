@@ -57,7 +57,9 @@ export default async function Home() {
 
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-between p-12 md:p-24">
-      <div className="absolute top-12 right-12 md:top-24 md:right-24">
+      <div className="flex justify-between items-center w-full">
+        <h1>Hey, welcome back 👋</h1>
+
         <DynamicWidget
           innerButtonComponent={
             <Button variant="outline" size="icon">
