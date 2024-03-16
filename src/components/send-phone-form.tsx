@@ -1,3 +1,4 @@
+import { fetchDynamicApi } from '@/api/service/dynamic';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -25,7 +26,7 @@ export default function SendPhoneForm() {
       // TOOD: set toast error
     }
 
-    const wallet = await getWalletByPhone(data.phone);
+    const wallet = await fetchDynamicApi();
 
     const { hash } = await sendTransaction({
       to: wallet,

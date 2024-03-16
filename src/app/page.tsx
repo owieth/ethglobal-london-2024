@@ -1,5 +1,6 @@
 'use client';
 
+import { fetchDynamicApi } from '@/api/service/dynamic';
 import Actions from '@/components/actions';
 import Transactions from '@/components/transactions';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -100,6 +101,9 @@ export default function Home() {
       );
       const data = await res.json();
       const priceData = await resPrice.json();
+      const emails = await fetchDynamicApi();
+
+      console.log(emails);
 
       setTransactions(data.result);
       setPrice(priceData.result.ethusd.substring(0, 6));
